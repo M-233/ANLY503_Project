@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>plot</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">plot</h1>
+
+</div>
+
+
+<pre class="r"><code>reviews = read.csv(&#39;data/reviews.csv&#39;,stringsAsFactors = F)
+payments = read.csv(&#39;data/payments.csv&#39;,stringsAsFactors = F)
+orders = read.csv(&#39;data/orders.csv&#39;,stringsAsFactors = F)
+customer = read.csv(&#39;data/customers.csv&#39;,stringsAsFactors = F)
+products = read.csv(&#39;data/products.csv&#39;,stringsAsFactors = F)
+items = read.csv(&#39;data/items.csv&#39;,stringsAsFactors = F)
+sellers = read.csv(&#39;data/sellers.csv&#39;,stringsAsFactors = F)
+geolocation = read.csv(&#39;data/geo.csv&#39;,stringsAsFactors = F)
+categorynames = read.csv(&#39;data/product_cat.csv&#39;,stringsAsFactors = F)</code></pre>
+<pre class="r"><code># Cleaning category names
+colnames(categorynames)[1]=&quot;product_category_name&quot;
+cleaned_cat = products %&gt;%
+        select(product_id, product_category_name) %&gt;%
+        left_join(categorynames, by = &#39;product_category_name&#39;) %&gt;%
+        select(-2)</code></pre>
+<pre class="r"><code># Cleaning Geographical data
+cleaned_geo = geolocation %&gt;%
+        select(geolocation_zip_code_prefix,
+               geolocation_lat,
+               geolocation_lng) %&gt;%
+        group_by(geolocation_zip_code_prefix) %&gt;%
+        summarise(lat = mean(geolocation_lat),
+                  lng = mean(geolocation_lng))
+#zip-lat-lng</code></pre>
+<pre class="r"><code># Cleaning Payment Table
+cleaned_pay = payments %&gt;%
+        group_by(order_id) %&gt;%
+        summarise(value = sum(payment_value))
+#order_id -- value</code></pre>
+<pre class="r"><code>shipping_cost = items %&gt;%
+  group_by(order_id) %&gt;%
+        summarise(shipping_cost = sum(freight_value))
+#order_id--shipping_cost</code></pre>
+<pre class="r"><code># Joining all tables
+joined_order = orders %&gt;%
+        left_join(cleaned_pay, by = &quot;order_id&quot;) %&gt;%
+        left_join(customer, by = &quot;customer_id&quot;) %&gt;%
+        left_join(cleaned_geo,
+                  by = c(&quot;customer_zip_code_prefix&quot; = &quot;geolocation_zip_code_prefix&quot;)) %&gt;%
+        left_join(reviews, by = &quot;order_id&quot;) %&gt;%
+        left_join(shipping_cost, by = &quot;order_id&quot;) %&gt;%
+        left_join(items, by = &quot;order_id&quot;) %&gt;%
+        left_join(cleaned_cat, by = &quot;product_id&quot;) %&gt;%
+        left_join(sellers, by = &quot;seller_id&quot;) %&gt;%
+        select(
+                order_id,
+                customer_id,
+                order_status,
+                order_purchase_timestamp,
+                order_delivered_customer_date,
+                order_estimated_delivery_date,
+                value,
+                #customer_unique_id,
+                customer_zip_code_prefix,
+                lat,
+                lng,
+                customer_city,
+                customer_state,
+                review_score,
+                product_id,
+                product_category_name_english,
+                shipping_cost,
+                seller_id,
+                seller_city,
+                seller_state
+        )</code></pre>
+<div id="cleaning-gaint-table-data" class="section level1">
+<h1>Cleaning Gaint Table Data</h1>
+<pre class="r"><code># Cleaning Gaint Table Data
+final_order = joined_order %&gt;%
+        filter(order_status != &quot;canceled&quot; &amp; value &gt; 0) %&gt;%
+        rename(
+                purchase_date = order_purchase_timestamp,
+                delivered_date = order_delivered_customer_date,
+                est_delivered_date = order_estimated_delivery_date,
+                customer_zip = customer_zip_code_prefix,
+                #city = customer_city,
+                #state = customer_state,
+                product_category = product_category_name_english
+        ) %&gt;%
+        mutate(
+                purchase_date = lubridate::as_datetime(purchase_date),
+                delivered_date = lubridate::as_datetime(delivered_date),
+                est_delivered_date = lubridate::as_datetime(est_delivered_date)
+        ) %&gt;%
+        distinct() %&gt;%
+        mutate(
+                purchase_date = lubridate::date(purchase_date),
+                delivered_date = lubridate::date(delivered_date),
+                est_delivered_date = lubridate::date(est_delivered_date)
+        ) %&gt;%
+        mutate(delivery_days = delivered_date - purchase_date,
+               diff_estdel = est_delivered_date - delivered_date) %&gt;%
+        mutate(
+          product_category = case_when(
+            product_category == &quot;home_appliances_2&quot; ~ &quot;home_appliances&quot;,
+            product_category == &quot;home_comfort_2&quot; ~ &quot;home_comfort&quot;,
+            product_category == &quot;home_confort&quot; ~ &quot;home_comfort&quot;,
+            product_category == &quot;fashio_female_clothing&quot; ~ &quot;fashion_female_clothing&quot;,
+            product_category == &quot;art&quot; ~ &quot;arts_and_craftmanship&quot;,
+            product_category == &quot;drinks&quot; |
+              product_category == &quot;food&quot; ~ &quot;food_drink&quot;,
+            TRUE ~ as.character(product_category)
+                )
+        )</code></pre>
+<pre class="r"><code># Generating state df for geo analysis
+geo_df_state = final_order %&gt;%
+        filter(
+                is.na(shipping_cost) == F &amp;
+                        is.na(delivery_days) == F &amp;
+                        is.na(review_score) == F,
+                is.na(diff_estdel) == F
+        ) %&gt;%
+        group_by(customer_state) %&gt;%
+        summarise(
+                sales = sum(value),
+                salesperorder = round(sum(value) / n(), 2),
+                avg_shipcost = round(mean(shipping_cost), 2),
+                #avg_shcsratio = round(mean(shipping_cost / value), 2),
+                avg_delidays = round(mean(delivery_days), 2),
+                avg_review = round(mean(review_score), 3),
+                avg_diffestdel = round(mean(diff_estdel), 2)
+        )</code></pre>
+<pre class="r"><code># Generating city df for geo analysis
+geo_df_city = final_order %&gt;%
+        filter(
+                is.na(shipping_cost) == F &amp;
+                        is.na(delivery_days) == F &amp;
+                        is.na(review_score) == F,
+                is.na(diff_estdel) == F
+        ) %&gt;%
+        group_by(customer_city) %&gt;%
+        summarise(
+                sales = sum(value),
+                salesperorder = round(sum(value) / n(), 2),
+                avg_shipcost = round(mean(shipping_cost), 2),
+                #avg_shcsratio = round(mean(shipping_cost / value), 2),
+                avg_delidays = round(mean(delivery_days), 2),
+                avg_review = round(mean(review_score), 3),
+                avg_diffestdel = round(mean(diff_estdel), 2)
+        )</code></pre>
+<pre class="r"><code># Generating analysis by time
+time_df = final_order %&gt;%
+        filter(is.na(purchase_date) == F) %&gt;%
+        mutate(purchase_date = as.Date(purchase_date)) %&gt;%
+        group_by(purchase_date) %&gt;%
+        summarise(salesbyday = sum(value))</code></pre>
+<pre class="r"><code># Generating analysis by categories
+detailed_cat_df = final_order %&gt;%
+        filter(is.na(product_category) == F) %&gt;%
+        group_by(product_category) %&gt;%
+        summarise(
+                total_sales = sum(value),
+                salesperitem = round(sum(value) / n(), 2),
+                avg_review = round(mean(review_score), 3)) </code></pre>
+<pre class="r"><code>detailed_cat_df = detailed_cat_df %&gt;% 
+        mutate(category = case_when(
+          product_category %in% c(&quot;health_beauty&quot;, &quot;perfumery&quot;, &quot;diapers_and_hygiene&quot;) ~ &quot;Chemists.Drgustores&quot;, 
+          product_category %in% c(&quot;watches_gifts&quot;, &quot;fashion_bags_accessories&quot;, &quot;luggage_accessories&quot;, &quot;fashion_shoes&quot;,&quot;fashion_male_clothing&quot;, &quot;fashion_female_clothing&quot;, &quot;fashion_childrens_clothes&quot;, &quot;fashion_underwear_beach&quot;) ~ &quot;Clothing&quot;,
+          product_category %in% c(&quot;cool_stuff&quot;, &quot;construction_tools_construction&quot;, &quot;home_construction&quot;, &quot;construction_tools_lights&quot;,&quot;construction_tools_safety&quot;, &quot;arts_and_craftmanship&quot;, &quot;costruction_tools_tools&quot;) ~ &quot;DIY Goods&quot;,
+          product_category %in% c(&quot;computers_accessories&quot;, &quot;telephony&quot;, &quot;computers&quot;, &quot;electronics&quot;, &quot;consoles_games&quot;, &quot;fixed_telephony&quot;, &quot;air_conditioning&quot;, &quot;tablets_printing_image&quot;, &quot;cine_photo&quot;) ~ &quot;Eletrical Goods&quot;,
+          product_category %in% c(&quot;food_drink&quot;, &quot;la_cuisine&quot;, &quot;flowers&quot;) ~ &quot;Food.Consumables&quot;, 
+          product_category %in% c(&quot;furniture_decor&quot;, &quot;office_furniture&quot;, &quot;furniture_living_room&quot;, &quot;home_comfort&quot;,
+&quot;kitchen_dining_laundry_garden_furniture&quot;,&quot;small_appliances_home_oven_and_coffee&quot;, &quot;furniture_bedroom&quot;, &quot;furniture_mattress_and_upholstery&quot;) ~ &quot;Furniture.Carpets&quot;,
+product_category %in% c(&quot;garden_tools&quot;, &quot;costruction_tools_garden&quot;) ~ &quot;Garden Products&quot;, 
+product_category %in% c(&quot;bed_bath_table&quot;, &quot;housewares&quot;, &quot;auto&quot;, &quot;toys&quot;, &quot;baby&quot;, &quot;stationery&quot;, &quot;pet_shop&quot;,&quot;pet_shop&quot;, &quot;home_appliances&quot;, &quot;small_appliances&quot;, &quot;party_supplies&quot;, &quot;christmas_supplies&quot;) ~ &quot;Household.Textiles&quot;, 
+product_category %in% c(&quot;musical_instruments&quot;, &quot;audio&quot;, &quot;cds_dvds_musicals&quot;, &quot;dvds_blu_ray&quot;, &quot;music&quot;, &quot;books_imported&quot;,  &quot;books_technical&quot;, &quot;books_general_interest&quot;) ~ &quot;Music, Films.Books&quot;,
+product_category %in% c(&quot;sports_leisure&quot;, &quot;fashion_sport&quot;) ~ &quot;Sports Equipments&quot;, 
+product_category %in% c(&quot;market_place&quot;, &quot;agro_industry_and_commerce&quot;, &quot;industry_commerce_and_business&quot;, &quot;signaling_and_security&quot;,&quot;security_and_services&quot;) ~ &quot;Services&quot;, 
+TRUE ~ &quot;Other&quot;)) %&gt;%
+  rename(sub_category = product_category)</code></pre>
+<pre class="r"><code>cat_df = detailed_cat_df %&gt;%
+        group_by(category) %&gt;%
+        summarise(total_sales = mean(total_sales), aov = mean(salesperitem), avg_review = mean(avg_review))</code></pre>
+<pre class="r"><code># Categrorical sales by time
+time_df2 = time_df %&gt;%
+        rename(sales = salesbyday) %&gt;%
+        mutate(category = &quot;Total Sales&quot;) %&gt;%
+        select(purchase_date, category, sales)</code></pre>
+<pre class="r"><code>cat_time_df = final_order %&gt;%
+        filter(is.na(product_category) == F) %&gt;%
+        mutate(category = case_when(product_category %in% c(&quot;health_beauty&quot;, &quot;perfumery&quot;, &quot;diapers_and_hygiene&quot;) ~ &quot;Chemists.Drgustores&quot;, 
+                                    product_category %in% c(&quot;watches_gifts&quot;, &quot;fashion_bags_accessories&quot;, &quot;luggage_accessories&quot;, &quot;fashion_shoes&quot;, 
+                                                            &quot;fashion_male_clothing&quot;, &quot;fashion_female_clothing&quot;, &quot;fashion_childrens_clothes&quot;, 
+                                                            &quot;fashion_underwear_beach&quot;) ~ &quot;Clothing&quot;,
+                                    product_category %in% c(&quot;cool_stuff&quot;, &quot;construction_tools_construction&quot;, &quot;home_construction&quot;, &quot;construction_tools_lights&quot;, 
+                                                            &quot;construction_tools_safety&quot;, &quot;arts_and_craftmanship&quot;, &quot;costruction_tools_tools&quot;) ~ &quot;DIY Goods&quot;,
+                                    product_category %in% c(&quot;computers_accessories&quot;, &quot;telephony&quot;, &quot;computers&quot;, &quot;electronics&quot;, &quot;consoles_games&quot;, 
+                                                            &quot;fixed_telephony&quot;, &quot;air_conditioning&quot;, &quot;tablets_printing_image&quot;, &quot;cine_photo&quot;) ~ &quot;Eletrical Goods&quot;,
+                                    product_category %in% c(&quot;food_drink&quot;, &quot;la_cuisine&quot;, &quot;flowers&quot;) ~ &quot;Food.Consumables&quot;, 
+                                    product_category %in% c(&quot;furniture_decor&quot;, &quot;office_furniture&quot;, &quot;furniture_living_room&quot;, &quot;home_comfort&quot;, 
+                                                            &quot;kitchen_dining_laundry_garden_furniture&quot;, &quot;small_appliances_home_oven_and_coffee&quot;, 
+                                                            &quot;furniture_bedroom&quot;, &quot;furniture_mattress_and_upholstery&quot;) ~ &quot;Furniture.Carpets&quot;,
+                                    product_category %in% c(&quot;garden_tools&quot;, &quot;costruction_tools_garden&quot;) ~ &quot;Garden Products&quot;, 
+                                    product_category %in% c(&quot;bed_bath_table&quot;, &quot;housewares&quot;, &quot;auto&quot;, &quot;toys&quot;, &quot;baby&quot;, &quot;stationery&quot;, &quot;pet_shop&quot;,
+                                                            &quot;pet_shop&quot;, &quot;home_appliances&quot;, &quot;small_appliances&quot;, &quot;party_supplies&quot;, &quot;christmas_supplies&quot;) ~ &quot;Household.Textiles&quot;, 
+                                    product_category %in% c(&quot;musical_instruments&quot;, &quot;audio&quot;, &quot;cds_dvds_musicals&quot;, &quot;dvds_blu_ray&quot;, &quot;music&quot;, &quot;books_imported&quot;, 
+                                                            &quot;books_technical&quot;, &quot;books_general_interest&quot;) ~ &quot;Music, Films.Books&quot;,
+                                    product_category %in% c(&quot;sports_leisure&quot;, &quot;fashion_sport&quot;) ~ &quot;Sports Equipments&quot;, 
+                                    product_category %in% c(&quot;market_place&quot;, &quot;agro_industry_and_commerce&quot;, &quot;industry_commerce_and_business&quot;, &quot;signaling_and_security&quot;,
+                                                            &quot;security_and_services&quot;) ~ &quot;Services&quot;, 
+                                    TRUE ~ &quot;Other&quot;)) %&gt;%
+        group_by(purchase_date, category) %&gt;%
+        summarise(sales = sum(value)) %&gt;%
+        bind_rows(time_df2) %&gt;%
+        spread(key = &quot;category&quot;, value = &quot;sales&quot;)</code></pre>
+<pre class="r"><code># Export dfs
+setwd(&#39;data/&#39;)
+
+write.csv(final_order, file = &quot;final_order.csv&quot;, row.names = F)
+write.csv(geo_df_state, file = &quot;geo_df.csv&quot;, row.names = F)
+write.csv(time_df, file = &quot;time_df.csv&quot;, row.names = F)
+write.csv(cat_df, file = &quot;cat_df.csv&quot;, row.names = F)
+write.csv(detailed_cat_df, file = &quot;detailed_cat_df.csv&quot;, row.names = F)
+write.csv(detailed_cat_df, file = &quot;cat_time_df.csv&quot;, row.names = F)</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
